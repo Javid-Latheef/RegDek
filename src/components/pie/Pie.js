@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { output } from '../../assets/output';
-import { objectTypeAnnotation } from '@babel/types';
 
  
 class Pie extends Component {
@@ -20,7 +19,7 @@ class Pie extends Component {
            let obj = {};
            obj.name = "P"+i;
            obj.y = output.filter((item) => item['priority'] === i).length;
-           if(i == 1){
+           if(i === 1){
                obj.sliced = true;
                obj.selected = true;
            }

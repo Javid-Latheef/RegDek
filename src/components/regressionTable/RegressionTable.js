@@ -84,7 +84,7 @@ class RegressionTable extends Component {
             description: "",
             selectedPriorityOption: null,
             selectedGroupOption: null,
-            persons: []
+            selectedRows: []
         }
     }
 
@@ -180,7 +180,30 @@ class RegressionTable extends Component {
     }
 
     handleChange(data){
-      console.log('Selected Rows: ', data);
+      this.setState({selectedRows : data.selectedRows})
+    }
+
+    onRunButtonClick(){
+      
+      let priorityArray = [], groupArray = [];
+      if(this.state.selectedPriorityOption){
+        priorityArray = this.state.selectedPriorityOption.map(el => el.value);
+      }
+      if(this.state.selectedGroupOption){
+        groupArray = this.state.selectedGroupOption.map(el => el.value);
+      }
+
+
+      const postRequest = {
+        priority : priorityArray,
+        groups : groupArray,
+        selectedItems : this.state.selectedRows
+      }
+      
+      axios.post(`http://localhost:8080/selection`, postRequest)
+      .then(res => {
+        console.log(res.data);
+      })
     }
 
   
@@ -220,7 +243,7 @@ class RegressionTable extends Component {
                 allowOverflow={false}
                 customStyles={customStyles}
             />
-            <div style={{textAlign:'right'}}><Button color="primary">Run</Button></div>
+            <div style={{textAlign:'right'}}><Button color="primary" onClick ={() => this.onRunButtonClick()} disabled={this.state.selectedRows.length === 0}>Run</Button></div>
             </div>
 		);
 	}
